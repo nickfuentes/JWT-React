@@ -7,8 +7,10 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import BaseLayout from './components/BaseLayout'
 import Login from './components/Login'
 import MyBooks from './components/MyBooks'
+import { setAuthenticationHeader } from './utils/authenticate';
 
-
+let token = localStorage.getItem('jsonwebtoken')
+setAuthenticationHeader(token)
 
 ReactDOM.render(
 <BrowserRouter>

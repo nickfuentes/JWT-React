@@ -6,12 +6,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 
-const users = [
-    {
-        username: 'johndoe',
-    password: 'password'
-}
-]
+const users = [{username: 'johndoe', password: 'password'}]
 
 app.get('/api/add-books', (req, res) => {
     res.json({message: 'Books added..'})

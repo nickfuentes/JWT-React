@@ -7,12 +7,15 @@ function MyBooks() {
 
         axios.get('http://localhost:3001/api/my-books')
         .then(response => {
+            console.log(response)
         })
     }
 
     return(
         <div>
-            <button>Get My Books</button>
+            <button onClick={() => handleGetMyBooks()}>Get My Books</button>
         </div>
     )
 }
+
+export default MyBooks
