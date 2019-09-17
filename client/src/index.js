@@ -8,18 +8,28 @@ import BaseLayout from "./components/BaseLayout";
 import Login from "./components/Login";
 import MyBooks from "./components/MyBooks";
 import { setAuthenticationHeader } from "./utils/authenticate";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./store/reducer";
+
+const store = createStore(
+  reducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 let token = localStorage.getItem("jsonwebtoken");
 setAuthenticationHeader(token);
 
 ReactDOM.render(
   <BrowserRouter>
-    <BaseLayout>
-      <Switch>
-        <Route path="/" exact component={Login}></Route>
-        <Route pathe="/my-books" component={MyBooks}></Route>
-      </Switch>
-    </BaseLayout>
+    <Provider store={store}>
+      <BaseLayout>
+        <Switch>
+          <Route path="/" exact component={Login}></Route>
+          <Route pathe="/my-books" component={MyBooks}></Route>
+        </Switch>
+      </BaseLayout>
+    </Provider>
   </BrowserRouter>,
   document.getElementById("root")
 );
