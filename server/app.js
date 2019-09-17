@@ -3,40 +3,13 @@ const app = express();
 let jwt = require("jsonwebtoken");
 const cors = require("cors");
 require("dotenv").config();
+const authenticate = require("./authMiddleware");
+
+global.users = [{ username: "johndoe", password: "password" }];
 
 app.use(cors());
 app.use(express.json());
-
-const users = [{ username: "johndoe", password: "password" }];
-
-// Middleware
-app.all("/api/*", (req, res, next) => {
-  console.log("middleware called..");
-
-  let headers = req.headers["authorization"];
-
-  if (headers) {
-    const token = headers.split(" ")[1];
-    let decoded = jwt.verify(token, "someprivatekey");
-    if (decoded) {
-      const username = decoded.username;
-
-      const persistedUser = users.find(u => u.username == username);
-      if (persistedUser) {
-        next();
-      } else {
-        console.log("Error");
-        res.join({ error: "Invalid credintials" });
-      }
-    } else {
-      console.log("Error");
-      res.json({ error: "Unauthorized access" });
-    }
-  } else {
-    console.log("Error");
-    res.json({ error: "Unauthorized access" });
-  }
-});
+app.all("/api/*", authenticate);
 
 //Route that add books
 app.get("/api/add-books", (req, res) => {
@@ -49,6 +22,7 @@ app.get("/api/my-books", (req, res) => {
   res.json([{ title: "Atomic Habits" }]);
 });
 
+// Creates JWT is user exist in database
 app.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -60,7 +34,7 @@ app.post("/login", (req, res) => {
   if (persistedUser) {
     // credentials are valid
 
-    var token = jwt.sign({ username: username }, "someprivatekey");
+    var token = jwt.sign({ username: username }, process.env.JWT_SECRET_KEY);
     res.json({ token: token });
   } else {
     // credentials are not valid
