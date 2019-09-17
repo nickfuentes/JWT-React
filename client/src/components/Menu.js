@@ -12,12 +12,16 @@ function Menu(props) {
 
   return (
     <ul>
-      <li>
-        <NavLink to="/">Login</NavLink>
-      </li>
-      <li>
-        <NavLink to="/register">Register</NavLink>
-      </li>
+      {!props.authenticated ? (
+        <li>
+          <NavLink to="/">Login</NavLink>
+        </li>
+      ) : null}
+      {!props.authenticated ? (
+        <li>
+          <NavLink to="/register">Register</NavLink>
+        </li>
+      ) : null}
       {props.authenticated ? (
         <li>
           <NavLink to="/my-books">My Books</NavLink>

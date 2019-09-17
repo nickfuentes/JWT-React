@@ -15,6 +15,7 @@ const reducer = (state = initialState, action) => {
         isAuthenticated: false
       };
   }
+
   return state;
 };
 

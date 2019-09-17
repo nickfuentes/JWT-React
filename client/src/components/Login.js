@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { setAuthenticationHeader } from "../utils/authenticate";
+import { connect } from "react-redux";
 
-function Login() {
+function Login(props) {
   const [user, setUser] = useState({
     username: "",
     password: ""
@@ -15,7 +17,12 @@ function Login() {
       })
       .then(response => {
         const token = response.data.token;
+        // save token in local storage
         localStorage.setItem("jsonwebtoken", token);
+        // set default axios header
+        setAuthenticationHeader(token);
+        // change redux state to isAuthenticated true
+        props.onAuthenticated(token);
       });
   };
 
@@ -39,4 +46,17 @@ function Login() {
   );
 }
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuthenticated: token =>
+      dispatch({
+        type: "ON_AUTHENTICATED",
+        token: token
+      })
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Login);
