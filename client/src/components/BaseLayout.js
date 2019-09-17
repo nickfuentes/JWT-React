@@ -1,15 +1,13 @@
-import React from 'react'
+import React from "react";
+import Menu from "./Menu";
 
 function BaseLayout(props) {
-
-    return (
-        <div>
-            <h1>Menu</h1>
-            <div>
-                {props.children}
-            </div>
-        </div>
-    )
+  return (
+    <div>
+      <Menu />
+      <div>{props.children}</div>
+    </div>
+  );
 }
 
-export default BaseLayout
+export default BaseLayout;
